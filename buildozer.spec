@@ -20,7 +20,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivy-garden,pyjnius,plyer
+requirements = python3,kivy2.3.1,kivy-garden,pyjnius,plyer
 
 # (str) Custom source folders for requirements
 # requirements.source.kivy = ../../kivy
