@@ -62,6 +62,7 @@ android.private_storage = True
 
 # (str) Bootstrap to use for android outputs
 p4a.bootstrap = sdl2
+android.accept_sdk_license = True
 
 [buildozer]
 
