@@ -2,54 +2,41 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Install System Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ccache git libffi-dev libssl-dev autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libgdbm-dev libncursesw5-dev libsqlite3-dev ukwm xclip xsel libjpeg-dev openjdk-17-jdk unzip wget apktool
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
+          sudo apt-get install -y libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+          sudo apt-get install -y libsqlite3-dev sqlite3 autoconf automake libtool pkg-config
 
-    - name: Install Buildozer and Cython
-      run: |
-        pip install --upgrade pip
-        pip install Cython==0.29.36
-        pip install git+https://github.com/kivy/buildozer.git@master
+      - name: Install Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install git+https://github.com/kivy/buildozer.git
 
-    - name: Accept Android SDK Licenses
-      run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        # Command line tools ഡൗൺലോഡ് ചെയ്ത് ലൈസൻസ് അക്സെപ്റ്റ് ചെയ്യുന്നു
-        wget --quiet https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip -q commandlinetools-linux-9477386_latest.zip -d cmdline-tools
-        mkdir -p sdk/cmdline-tools
-        mv cmdline-tools/cmdline-tools sdk/cmdline-tools/latest
-        export ANDROID_HOME=$PWD/sdk
-        yes | ./sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+      - name: Build with Buildozer
+        env:
+          ANDROID_NDK_HOME: ''
+        run: |
+          buildozer android debug
 
-    - name: Build APK with Buildozer
-      run: |
-        export ANDROID_HOME=$PWD/sdk
-        # Automatically accept SDK licenses during buildozer run
-        yes | buildozer android debug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: mpsck-apk
-        path: bin/*.apk
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: .buildozer/android/platform/build-armeabi-v7a_arm64-v8a/dists/*/build/outputs/apk/debug/*.apk
