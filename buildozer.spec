@@ -3,6 +3,9 @@
 # (string) Title of your application
 title = mpsck
 
+# (string) Application version
+version = 0.1
+
 # (string) Package name
 package.name = mpsck
 
@@ -20,16 +23,15 @@ source.include_exts = py,png,jpg,kv,atlas,ttf
 requirements = python3,kivy==2.3.0,kivy-garden,pyjnius,plyer
 
 # (str) Custom source folders for requirements
-# It may be useful if you'd like to include custom modules
 # requirements.source.kivy = ../../kivy
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse, landscape-reverse
 orientation = portrait
 
-# ==============================================================================
+# =============================================================================
 # Android specific configuration
-# ==============================================================================
+# =============================================================================
 
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1
@@ -50,8 +52,6 @@ android.ndk = 25b
 android.private_storage = True
 
 # (list) List of Java .jar files to add to the libs so that pyjnius can access
-# their classes. Don't add jars that you do not need, generic ones like android-support-v4.jar
-# are included by default.
 # android.add_jars = foo.jar
 
 # (list) List of Java classes to add to the intent filters
@@ -61,7 +61,7 @@ android.private_storage = True
 # android.add_aars =
 
 # (str) Bootstrap to use for android outputs
-android.bootstrap = sdl2
+p4a.bootstrap = sdl2
 
 [buildozer]
 
