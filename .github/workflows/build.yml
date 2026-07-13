@@ -9,34 +9,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          sudo apt-get install -y libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good
-          sudo apt-get install -y libsqlite3-dev sqlite3 autoconf automake libtool pkg-config
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential ccache git zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev xclip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev cmake textiplay autoconf automake libtool libtool-bin pkg-config libsqlite3-dev sqlite3
 
-      - name: Install Buildozer
-        run: |
-          pip install --upgrade pip
-          pip install git+https://github.com/kivy/buildozer.git
+    - name: Install Buildozer
+      run: |
+        pip install --upgrade pip
+        pip install git+https://github.com/kivy/buildozer.git
 
-      - name: Build with Buildozer
-        env:
-          ANDROID_NDK_HOME: ''
-        run: |
-          buildozer android debug
+    - name: Build with Buildozer
+      env:
+        ANDROID_NDK_HOME: ''
+      run: |
+        buildozer android debug
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: package
-          path: /home/runner/**/build/outputs/apk/debug/*.apk
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: package
+        path: /home/runner/**/build/outputs/apk/debug/*.apk
