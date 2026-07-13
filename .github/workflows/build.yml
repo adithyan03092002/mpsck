@@ -39,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: package
-          path: /home/runner/.buildozer/android/platform/build-armeabi-v7a_arm64-v8a/dists/mpsck__armeabi-v7a/build/outputs/apk/debug/*.apk
+          path: /home/runner/**/build/outputs/apk/debug/*.apk
