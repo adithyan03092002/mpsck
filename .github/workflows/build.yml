@@ -37,19 +37,12 @@ jobs:
 
     - name: Build with Buildozer
       run: |
+        # ആൻഡ്രോയിഡ് ടൂളുകളുടെ ലൊക്കേഷൻ സെറ്റ് ചെയ്യുന്നു
         export ANDROID_HOME=/usr/local/share/android/sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/tools/bin
-        export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
         
-        # ലൈസൻസുകൾ ഓട്ടോമാറ്റിക് ആയി അക്സെപ്റ്റ് ചെയ്യാൻ
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        yes | sdkmanager --licenses || true
+        # ലൈസൻസുകൾ ഓട്ടോമാറ്റിക് ആയി അക്സെപ്റ്റ് ചെയ്യാനുള്ള കമാൻഡ്
+        yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses || true
         
+        # ബിൽഡോസർ ബിൽഡ് റൺ ചെയ്യുന്നു
         buildozer android debug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Android-APK
-        path: ./**/*.apk
