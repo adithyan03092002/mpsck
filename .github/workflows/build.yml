@@ -35,9 +35,16 @@ jobs:
         pip install Cython==3.0.10
         pip install buildozer
 
+    - name: Auto-Accept Android SDK Licenses
+      run: |
+        # ആൻഡ്രോയിഡ് SDK ലൈസൻസുകൾ നിർബന്ധിതമായി റീഡ് ചെയ്യിക്കാൻ ആവശ്യമായ ഫോൾഡറുകൾ സൃഷ്ടിക്കുന്നു
+        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+        echo -e "247a1c6d623dae9a81f63d450ac1d6c3861a421e\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910\n893a6a6d39b2754d4f7218b58862ab619c45b5c4\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nae220ef44414b35e9a3d749c20f2a7142f900f03\n854f30cd387f37bc0b1529d0428296f111290e46\n601085b94cd77f6d00b1414e6d4000b09d1e18bc" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        # സിസ്റ്റത്തിൽ തന്നെയുള്ള sdkmanager ഉപയോഗിച്ച് ലൈസൻസുകൾ അക്സെപ്റ്റ് ചെയ്യുന്നു
+        yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses || true
+
     - name: Build with Buildozer
       run: |
-        # ആൻഡ്രോയിഡ് ലൈസൻസുകൾ ഓട്ടോമാറ്റിക് ആയി അക്സെപ്റ്റ് ചെയ്യാൻ ബിൽഡോസറിനോട് ആവശ്യപ്പെടുന്നു
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
         buildozer android debug
 
