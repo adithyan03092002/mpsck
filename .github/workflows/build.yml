@@ -27,33 +27,27 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libffi-dev libssl-dev libtinfo5 libncursesw5-dev libgdbm-dev libsqlite3-dev sqlite3 libbz2-dev libreadline-dev tk-dev libgdbm-compat-dev liblzma-dev lld
+        sudo apt-get install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libffi-dev libssl-dev libtinfo5 cmake clang
 
     - name: Install Python Dependencies
       run: |
         pip install --upgrade pip setuptools
-        pip install Cython==3.0.10
+        pip install cython==3.0.10
         pip install buildozer
 
     - name: Build with Buildozer
       run: |
-        # ആൻഡ്രോയിഡ് ടൂളുകളുടെ ലൊക്കേഷൻ ബിൽഡോസറിന് നേരിട്ട് കാണിച്ചു കൊടുക്കുന്നു
         export ANDROID_HOME=/usr/local/share/android/sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/tools/bin
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
         
-        # ബിൽഡോസർ സ്വന്തമായി ചെയ്യുന്നതിന് മുൻപ് ലൈസൻസ് പാത്ത് റെഡിയാക്കുന്നു
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        echo -e "247a1c6d623dae9a81f63d450ac1d6c3861a421e\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910\n893a6a6d39b2754d4f7218b58862ab619c45b5c4\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nae220ef44414b35e9a3d749c20f2a7142f900f03" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        
-        # ടൂളുകൾ മിസ്സാകാതിരിക്കാൻ സിസ്റ്റത്തിലുള്ള sdkmanager വഴി ലൈസൻസുകൾ ഫോഴ്സ് ചെയ്ത് അക്സെപ്റ്റ് ചെയ്യിക്കുന്നു
+        # Licenses accept ചെയ്യാൻ വേണ്ടി
         yes | sdkmanager --licenses || true
         
-        # ബിൽഡ് സ്റ്റാർട്ട് ചെയ്യുന്നു
         buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: Android-APK
-        path: .readme_assets/../**/*.apk
+        path: ./**/*.apk
