@@ -31,10 +31,11 @@ jobs:
 
     - name: Install Cython and Buildozer
       run: |
-        pip install --upgrade pip setuptools
-        pip install Cython==3.0.10
-        pip install buildozer
+        pip install --upgrade pip setuptools virtualenv
+        pip install Cython
+        pip install git+https://github.com/kivy/buildozer.git
 
     - name: Build with Buildozer
       run: |
+        export PATH=$PATH:~/.local/bin
         yes | buildozer android debug
