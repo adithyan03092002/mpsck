@@ -41,7 +41,9 @@ jobs:
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$ANDROID_HOME/tools/bin
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
         
-        # Licenses accept ചെയ്യാൻ വേണ്ടി
+        # ലൈസൻസുകൾ ഓട്ടോമാറ്റിക് ആയി അക്സെപ്റ്റ് ചെയ്യാൻ
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
         yes | sdkmanager --licenses || true
         
         buildozer android debug
