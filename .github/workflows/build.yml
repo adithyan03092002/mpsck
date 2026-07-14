@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libffi-dev libssl-dev libtinfo5 cmake clang
+        sudo apt-get install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libffi-dev libssl-dev libtinfo5
 
     - name: Install Python Dependencies
       run: |
@@ -35,10 +35,16 @@ jobs:
         pip install cython==3.0.10
         pip install buildozer
 
+    # Android SDK സെറ്റപ്പ് ചെയ്യാനും ഓട്ടോമാറ്റിക് ആയി ലൈസൻസ് ആക്സെപ്റ്റ് ചെയ്യാനും ഇത് സഹായിക്കും
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    # ആവശ്യമുള്ള build-tools നേരിട്ട് ഇൻസ്റ്റാൾ ചെയ്യുന്നു
+    - name: Install Android Build-Tools
+      run: |
+        sdkmanager "build-tools;34.0.0" "platforms;android-34"
+        yes | sdkmanager --licenses
+
     - name: Build with Buildozer
       run: |
-        # ഓട്ടോമാറ്റിക്കായി ലൈസൻസ് അക്സെപ്റ്റ് ചെയ്യാൻ ബിൽഡോസറിനോട് ആവശ്യപ്പെടുന്നു
-        export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
-        
-        # നേരിട്ട് ബിൽഡ് സ്റ്റാർട്ട് ചെയ്യുന്നു
         buildozer android debug
