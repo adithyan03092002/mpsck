@@ -4,10 +4,10 @@
 title = My Application
 
 # (str) Package name
-package.name = myapp
+package.name = mpsck
 
 # (str) Package domain (needed for android packaging)
-package.domain = org.test
+package.domain = org
 
 # (str) Source code where the main.py lives
 source.dir = .
