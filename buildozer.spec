@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title = Mpsck
 
 # (str) Package name
 package.name = mpsck
