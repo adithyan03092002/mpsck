@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsqlite3-dev lld ccache libffi-dev libssl-dev
+        sudo apt-get install -y libsqlite3-dev lld ccache libffi-dev libssl-dev autoconf automake libtool pkg-config
 
     - name: Install Cython and Buildozer
       run: |
@@ -31,4 +31,4 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        buildozer android debug
+        yes | buildozer android debug
