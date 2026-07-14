@@ -57,7 +57,8 @@ jobs:
     - name: Build with Buildozer
       run: |
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
-        buildozer android debug
+        # ഗ്രേഡിലിന്റെ പഴയ ഡിപെൻഡൻസി മാറ്റി പുതിയ വേർഷൻ ഡൗൺലോഡ് ചെയ്യാൻ താൽക്കാലികമായി കമാൻഡ് നൽകുന്നു
+        GRADLE_OPTS="-Dorg.gradle.internal.repository.max.tentatives=5" buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
