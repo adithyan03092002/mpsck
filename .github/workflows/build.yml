@@ -24,19 +24,23 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
+    - name: Install System Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libffi-dev libssl-dev libtinfo5 libncursesw5-dev libgdbm-dev libsqlite3-dev sqlite3 libbz2-dev libreadline-dev tk-dev libgdbm-compat-dev liblzma-dev lld
 
-    - name: Install Cython and Buildozer
+    - name: Install Python Dependencies
       run: |
         pip install --upgrade pip setuptools
         pip install Cython==3.0.10
         pip install buildozer
 
     - name: Build with Buildozer
-      uses: ArtemSBulgakov/buildozer-action@v1
+      run: |
+        buildozer android debug
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
       with:
-        buildozer_version: master
-        command: buildozer android debug
+        name: Android-APK
+        path: .readme_assets/../**/*.apk
