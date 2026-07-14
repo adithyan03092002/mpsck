@@ -38,6 +38,7 @@ jobs:
     - name: Build with Buildozer
       run: |
         # ആൻഡ്രോയിഡ് ടൂളുകളുടെ ലൊക്കേഷൻ ബിൽഡോസറിന് നേരിട്ട് കാണിച്ചു കൊടുക്കുന്നു
+        export ANDROID_HOME=/usr/local/share/android/sdk
         export ANDROID_HOME=/usr/local/lib/android/sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
