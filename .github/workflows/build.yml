@@ -35,16 +35,9 @@ jobs:
         pip install cython==3.0.10
         pip install buildozer
 
-    # Android SDK സെറ്റപ്പ് ചെയ്യാനും ഓട്ടോമാറ്റിക് ആയി ലൈസൻസ് ആക്സെപ്റ്റ് ചെയ്യാനും ഇത് സഹായിക്കും
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    # ആവശ്യമുള്ള build-tools നേരിട്ട് ഇൻസ്റ്റാൾ ചെയ്യുന്നു
-    - name: Install Android Build-Tools
-      run: |
-        sdkmanager "build-tools;34.0.0" "platforms;android-34"
-        yes | sdkmanager --licenses
-
+    # തനിയെ ഡൗൺലോഡ് ആകുന്ന SDK-യുടെ ലൈസൻസ് Buildozer തന്നെ ഓട്ടോമാറ്റിക് ആയി ആക്സെപ്റ്റ് ചെയ്യാനുള്ള കമാൻഡ് താഴെ നൽകിയിരിക്കുന്നു.
     - name: Build with Buildozer
+      env:
+        APP_ANDROID_ACCEPT_SDK_LICENSE: "y"
       run: |
         buildozer android debug
