@@ -15,18 +15,11 @@ source.dir = .
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
 
+# (str) Application version (നേരിട്ട് വേർഷൻ സെറ്റ് ചെയ്തു, ഇനി എറർ വരില്ല)
+version = 0.1
+
 # (list) List of requirements separated by a comma
-# GitHub Actions-ൽ എറർ വരാതിരിക്കാൻ പൈത്തൺ വേർഷൻ ഇവിടെ ലോക്ക് ചെയ്തിട്ടുണ്ട്
 requirements = python3==3.10.12, hostpython3==3.10.12, kivy, pyjnius, plyer
-
-# (str) Custom source folders for requirements
-# requirements.source.kivy = ../../kivy
-
-# (int) Presplash screen duration
-# presplash.filename = %(source.dir)s/data/presplash.png
-
-# (str) Icon of the application
-# icon.filename = %(source.dir)s/data/icon.png
 
 # (str) Supported orientations (valid options are: landscape, portrait, all)
 orientation = portrait
@@ -41,17 +34,10 @@ android.api = 33
 android.minapi = 21
 
 # (str) Android NDK version to use
-# പൈത്തൺ 3.10-ന് ഏറ്റവും അനുയോജ്യമായ NDK വേർഷനാണിത്
 android.ndk = 25c
 
 # (bool) Use --private data directory for the app
 android.private_storage = True
-
-# (str) Android NDK directory (if empty, it will be automatically downloaded)
-# android.ndk_path =
-
-# (str) Android SDK directory (if empty, it will be automatically downloaded)
-# android.sdk_path =
 
 # (list) Android architectures to build for
 android.archs = armeabi-v7a, arm64-v8a
