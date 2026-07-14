@@ -35,43 +35,21 @@ jobs:
         pip install Cython==3.0.10
         pip install buildozer
 
-    - name: Fix Android SDK Path and Licenses
-      run: |
-        # GitHub റണ്ണറിലെ ഒഫീഷ്യൽ ആൻഡ്രോയിഡ് SDK പാത്ത് ഫോഴ്സ് ചെയ്ത് ലിങ്ക് ചെയ്യുന്നു
-        export ANDROID_HOME=/usr/local/lib/android/sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin
-        
-        # ബിൽഡോസർ തിരയുന്ന ലൊക്കേഷനിലേക്ക് ടൂളുകൾ കൃത്യമായി മാപ്പ് ചെയ്യുന്നു
-        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-        if [ -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
-          ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-        elif [ -f "$ANDROID_HOME/tools/bin/sdkmanager" ]; then
-          ln -sf $ANDROID_HOME/tools/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-        fi
-        
-        # ആൻഡ്രോയിഡ് ലൈസൻസുകൾ തനിയെ അക്സെപ്റ്റ് ചെയ്യാൻ ഫയൽ റൈറ്റ് ചെയ്യുന്നു
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        echo -e "247a1c6d623dae9a81f63d450ac1d6c3861a421e\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910\n893a6a6d39b2754d4f7218b58862ab619c45b5c4\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nae220ef44414b35e9a3d749c20f2a7142f900f03" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        
-        # ഗ്രേഡിൽ ഡിപെൻഡൻസി എറർ ഒഴിവാക്കാൻ ഗൂഗിൾ റീപ്പോസിറ്ററി ഫോഴ്സ് ചെയ്യുന്നു
-        mkdir -p ~/.gradle
-        cat <<EOF > ~/.gradle/init.gradle
-        allprojects {
-            repositories {
-                google()
-                mavenCentral()
-                maven { url "https://maven.google.com" }
-            }
-        }
-        EOF
-
     - name: Build with Buildozer
       run: |
-        # ബിൽഡ് റൺ ചെയ്യുമ്പോഴും ഈ എൻവയോൺമെന്റ് വേരിയബിളുകൾ നിലനിർത്തുന്നു
+        # ആൻഡ്രോയിഡ് ടൂളുകളുടെ ലൊക്കേഷൻ ബിൽഡോസറിന് നേരിട്ട് കാണിച്ചു കൊടുക്കുന്നു
         export ANDROID_HOME=/usr/local/lib/android/sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin
         export APP_ANDROID_ACCEPT_SDK_LICENSE="y"
         
+        # ബിൽഡോസർ സ്വന്തമായി ചെയ്യുന്നതിന് മുൻപ് ലൈസൻസ് പാത്ത് റെഡിയാക്കുന്നു
+        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+        echo -e "247a1c6d623dae9a81f63d450ac1d6c3861a421e\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910\n893a6a6d39b2754d4f7218b58862ab619c45b5c4\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nae220ef44414b35e9a3d749c20f2a7142f900f03" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        
+        # ടൂളുകൾ മിസ്സാകാതിരിക്കാൻ സിസ്റ്റത്തിലുള്ള sdkmanager വഴി ലൈസൻസുകൾ ഫോഴ്സ് ചെയ്ത് അക്സെപ്റ്റ് ചെയ്യിക്കുന്നു
+        yes | sdkmanager --licenses || true
+        
+        # ബിൽഡ് സ്റ്റാർട്ട് ചെയ്യുന്നു
         buildozer android debug
 
     - name: Upload APK Artifact
