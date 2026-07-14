@@ -13,9 +13,9 @@ package.domain = org.test
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,tts
 
-# (str) Application version (നേരിട്ട് വേർഷൻ സെറ്റ് ചെയ്തു, ഇനി എറർ വരില്ല)
+# (str) Application version 
 version = 0.1
 
 # (list) List of requirements separated by a comma
