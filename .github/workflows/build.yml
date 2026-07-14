@@ -21,20 +21,14 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsqlite3-dev lld
+        sudo apt-get install -y libsqlite3-dev lld ccache libffi-dev libssl-dev
 
-    - name: Cache Buildozer JSON-RPC
-      uses: actions/cache@v4
-      with:
-        path: .buildozer
-        key: ${{ runner.os }}-buildozer-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-buildozer-
-
-    - name: Install Cython
-      run: pip install --upgrade Cython==3.0.10
+    - name: Install Cython and Buildozer
+      run: |
+        pip install --upgrade pip
+        pip install Cython==3.0.10
+        pip install buildozer
 
     - name: Build with Buildozer
-      uses: ArtemSBulgakov/buildozer-action@v1
-      with:
-        command: buildozer android debug
+      run: |
+        buildozer android debug
