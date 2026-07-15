@@ -35,9 +35,13 @@ jobs:
         pip install cython==3.0.10
         pip install buildozer
 
-    # തനിയെ ഡൗൺലോഡ് ആകുന്ന SDK-യുടെ ലൈസൻസ് Buildozer തന്നെ ഓട്ടോമാറ്റിക് ആയി ആക്സെപ്റ്റ് ചെയ്യാനുള്ള കമാൻഡ് താഴെ നൽകിയിരിക്കുന്നു.
-    - name: Build with Buildozer
-      env:
-        APP_ANDROID_ACCEPT_SDK_LICENSE: "y"
+    # ബിൽഡ് ചെയ്യുന്നതിന് തൊട്ടുമുൻപ് buildozer.spec ഫയലിലെ ആ പഴയ വാണിംഗും ലൈസൻസ് ഇഷ്യൂവും മാറ്റുന്നു
+    - name: Configure Buildozer Spec
       run: |
-        buildozer android debug
+        sed -i 's/android.bootstrap =/p4a.bootstrap =/g' buildozer.spec
+        sed -i 's/#android.accept_apk_license = False/android.accept_apk_license = True/g' buildozer.spec
+        sed -i 's/android.accept_apk_license = False/android.accept_apk_license = True/g' buildozer.spec
+
+    - name: Build with Buildozer
+      run: |
+        yes | buildozer android debug
