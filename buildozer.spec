@@ -20,7 +20,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+requirements = python3,kivy,pyjnius
 
 # (str) Supported orientations
 # Valid values are: landscape, portrait, all or top-down
@@ -30,7 +30,7 @@ orientation = portrait
 fullscreen = 1
 
 # (list) Permissions
-android.permissions = INTERNET
+android.permissions = RECORD_AUDIO,INTERNET
 
 # (int) Target Android API, should be as high as possible.
 android.api = 33
